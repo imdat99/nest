@@ -1,17 +1,17 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { CustomersModule } from './customers/customers.module';
-import { DatabaseModule } from './database/database.module';
-import databaseConfig from './config/typeorm.config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { SqlModule } from './database/sql.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig],
     }),
-    CustomersModule,
-    DatabaseModule,
+    SqlModule,
+    MongooseModule.forRoot(process.env.MONGO_URI),
+    AuthModule,
   ],
   controllers: [],
   providers: [],
