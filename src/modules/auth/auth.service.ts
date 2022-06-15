@@ -92,8 +92,9 @@ export class AuthService {
         newUser.id as string,
         newUser.userName as string,
       );
-      return tokens;
+      return { status: 200, ...tokens };
     } catch (err) {
+      console.log(err);
       throw new ConflictException(
         `${MSG.FRONTEND.EMAIL_DUPLICATED} or ${MSG.FRONTEND.USERNAME_DUPLICATED}`,
       );
@@ -105,13 +106,26 @@ export class AuthService {
       const isExistUser = await this.userRepo.findOneByOrFail({
         userName: loginDTO.userName,
       });
+      const passwordValid = await argon2.verify(
+        isExistUser.passWord,
+        loginDTO.passWord,
+      );
+      if (!passwordValid) {
+        throw new HttpException(
+          MSG.FRONTEND.AUTH_FAILED_WRONG_PASSWORD,
+          HttpStatus.NOT_FOUND,
+        );
+      }
       const tokens = await this.getTokens(
         isExistUser.id as string,
         isExistUser.userName as string,
       );
-      return tokens;
+      return { status: 200, ...tokens };
     } catch (err) {
-      throw new HttpException(err.message, HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        MSG.FRONTEND.USERNAME_NOT_EXIST,
+        HttpStatus.NOT_FOUND,
+      );
     }
   }
 
@@ -121,6 +135,7 @@ export class AuthService {
       { $pull: { refreshTokenArr: { $in: [refresh_token] } } },
     );
     return {
+      status: 200,
       success: true,
       access_token: '',
       refresh_token: '',
@@ -136,7 +151,7 @@ export class AuthService {
           { $pull: { refreshTokenArr: { $in: [refresh_token] } } },
         );
         const tokens = await this.getTokens(id, userName);
-        return tokens;
+        return { status: 200, ...tokens };
       } else {
         throw new HttpException(
           MSG.RESPONSE.BAD_REQUEST,
@@ -174,6 +189,7 @@ export class AuthService {
     });
 
     return {
+      status: 200,
       success: true,
       message: MSG.RESPONSE.SUCCESS,
     };

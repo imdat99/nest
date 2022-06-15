@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, Length } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, Length } from 'class-validator';
+import { ROLE } from 'src/config/constant';
 
 export class signUpDTO {
   @ApiProperty()
@@ -17,4 +18,9 @@ export class signUpDTO {
   @ApiProperty()
   @IsNotEmpty()
   passWord: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsEnum(ROLE, { each: true })
+  role: string;
 }

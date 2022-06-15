@@ -16,6 +16,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         database: configService.get('SQL_DB_NAME'),
         entities: ['dist/**/*.entity.js'],
         synchronize: true,
+        migrations: ['migration/*.js'],
+        cli: {
+          migrationsDir: 'migration',
+        },
       }),
     }),
   ],
