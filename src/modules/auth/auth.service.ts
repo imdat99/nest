@@ -52,7 +52,7 @@ export class AuthService {
         },
         {
           secret: this.config.get<string>('ACCESTOKEN_TOKEN_SECRET'),
-          expiresIn: 60 * 60,
+          expiresIn: 10 * 60,
         },
       ),
       this.jwtService.signAsync(
