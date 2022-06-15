@@ -11,7 +11,10 @@ export class UserService {
   async getProfile(id: string) {
     const profile = await this.userRepo.findOneBy({ id });
     delete profile.passWord;
-    return profile;
+    return {
+      status: 200,
+      ...profile,
+    };
   }
 
   async updatePrrofile(id: string, profileData: profileDTO) {
@@ -22,6 +25,7 @@ export class UserService {
     });
     delete res?.passWord;
     return {
+      status: 200,
       success: true,
       res,
     };

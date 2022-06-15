@@ -1,4 +1,5 @@
 import { Exclude } from 'class-transformer';
+import { ROLE } from 'src/config/constant';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -27,6 +28,12 @@ export class User {
 
   @Column()
   avatarUri: string;
+
+  @Column({
+    type: 'enum',
+    enum: ROLE,
+  })
+  role: ROLE;
 
   comparePassword: (password: string) => Promise<boolean>;
   compareResetPasswordToken: (password: string) => Promise<boolean>;
