@@ -11,6 +11,7 @@ const msg = {
     EMAIL_INACTIVE_DUPLICATED: 'Email duplicate',
     ACCOUNT_INACTIVE: 'Email not active',
     WRONG_PASSWORD: 'Wrong password',
+    DOUPLICATE_PASSWORD: 'The same password',
     TOO_MANY_REQUEST: 'Too many request',
     ACTIVE_USER: {
       ERROR: 'Internal rror',
@@ -22,6 +23,7 @@ const msg = {
     },
   },
   RESPONSE: {
+    SUCCESS: 'SUCCESSED',
     GET_REQUEST_OK: 'GET OK',
     POST_REQUEST_OK: 'POST OK',
     PUT_REQUEST_OK: 'PUT OK',
