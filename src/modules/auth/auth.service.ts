@@ -13,7 +13,7 @@ import { Model } from 'mongoose';
 import { MSG } from 'src/config/constant';
 import { User } from 'src/entity/user.entity';
 import { Repository } from 'typeorm';
-import { LoginDTO, passWordDTO, signUpDTO } from './dto';
+import { LoginDTO, LogoutDTO, passWordDTO, signUpDTO } from './dto';
 import { RefreshTokenDocument } from './schema/refreshtoken.schema';
 import { rtArr, Tokens } from './type';
 
@@ -130,10 +130,10 @@ export class AuthService {
     }
   }
 
-  async logOutFn(id: string, refresh_token: string) {
+  async logOutFn(id: string, logoutDTO: LogoutDTO) {
     await this.rtArrayModel.findOneAndUpdate(
       { id },
-      { $pull: { refreshTokenArr: { $in: [refresh_token] } } },
+      { $pull: { refreshTokenArr: { $in: [logoutDTO.refresh_token] } } },
     );
     return {
       status: 200,
