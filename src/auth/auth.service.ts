@@ -15,7 +15,7 @@ import { Repository } from 'typeorm';
 import { LoginDTO, signUpDTO } from './dto';
 import { RefreshTokenDocument } from './schema/refreshtoken.schema';
 import { rtArr, Tokens } from './type';
-
+import asyncWrapper from '../common/tools/asyncWrapper'
 @Injectable()
 export class AuthService {
   constructor(
@@ -95,8 +95,8 @@ export class AuthService {
     return tokens;
   }
 
-  async logInFn(loginDTO: LoginDTO) {
-    try {
+  logInFn(loginDTO: LoginDTO) = asyncWrapper(async function() {
+    
       const isExistUser = await this.userRepo.findOneByOrFail({
         userName: loginDTO.userName,
       });
@@ -105,13 +105,8 @@ export class AuthService {
           'Incorrect username or password',
           HttpStatus.NOT_FOUND,
         );
-      }
-    } catch (err ) {
-      return {
-        err.code,
-      };
-    }
-  }
+
+  })
 
   logOutFn() {
     return 1;
