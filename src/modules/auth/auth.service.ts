@@ -131,16 +131,28 @@ export class AuthService {
   }
 
   async logOutFn(id: string, logoutDTO: LogoutDTO) {
-    await this.rtArrayModel.findOneAndUpdate(
-      { id },
-      { $pull: { refreshTokenArr: { $in: [logoutDTO.refresh_token] } } },
-    );
-    return {
-      status: 200,
-      success: true,
-      access_token: '',
-      refresh_token: '',
-    };
+    try {
+      const isTrueToken = await this.rtArrayModel.findOne({ id });
+      if (isTrueToken.refreshTokenArr?.includes(logoutDTO.refresh_token)) {
+        await this.rtArrayModel.findOneAndUpdate(
+          { id },
+          { $pull: { refreshTokenArr: { $in: [logoutDTO.refresh_token] } } },
+        );
+        return {
+          status: 200,
+          success: true,
+          access_token: '',
+          refresh_token: '',
+        };
+      } else {
+        return new HttpException(
+          MSG.RESPONSE.BAD_REQUEST,
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+    } catch (err) {
+      throw new HttpException(err.message, HttpStatus.EXPECTATION_FAILED);
+    }
   }
 
   async refreshFn(id: string, refresh_token: string, userName: string) {
