@@ -111,7 +111,7 @@ export class AuthService {
         loginDTO.passWord,
       );
       if (!passwordValid) {
-        throw new HttpException(
+        return new HttpException(
           MSG.FRONTEND.AUTH_FAILED_WRONG_PASSWORD,
           HttpStatus.NOT_FOUND,
         );
@@ -122,6 +122,7 @@ export class AuthService {
       );
       return { status: 200, ...tokens };
     } catch (err) {
+      console.log(err);
       throw new HttpException(
         MSG.FRONTEND.USERNAME_NOT_EXIST,
         HttpStatus.NOT_FOUND,
@@ -153,7 +154,7 @@ export class AuthService {
         const tokens = await this.getTokens(id, userName);
         return { status: 200, ...tokens };
       } else {
-        throw new HttpException(
+        return new HttpException(
           MSG.RESPONSE.BAD_REQUEST,
           HttpStatus.UNAUTHORIZED,
         );
@@ -165,7 +166,7 @@ export class AuthService {
 
   async chagePasss(id: string, passDTO: passWordDTO) {
     if (passDTO.newPass === passDTO.oldWord) {
-      throw new HttpException(
+      return new HttpException(
         MSG.FRONTEND.DOUPLICATE_PASSWORD,
         HttpStatus.EXPECTATION_FAILED,
       );
@@ -176,7 +177,7 @@ export class AuthService {
       passDTO.oldWord,
     );
     if (!passwordValid) {
-      throw new HttpException(
+      return new HttpException(
         MSG.FRONTEND.WRONG_PASSWORD,
         HttpStatus.EXPECTATION_FAILED,
       );
