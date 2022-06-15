@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmpty } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class LogoutDTO {
   @ApiProperty()
-  @IsEmpty()
+  @IsNotEmpty()
   readonly refresh_token: string;
 }
