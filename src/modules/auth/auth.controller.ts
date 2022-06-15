@@ -16,7 +16,13 @@ import {
 } from '@nestjs/swagger';
 import { sucessResponseDTO } from 'src/common/dto';
 import { AuthService } from './auth.service';
-import { LoginDTO, LoginResponseDTO, passWordDTO, signUpDTO } from './dto';
+import {
+  LoginDTO,
+  LoginResponseDTO,
+  passWordDTO,
+  signUpDTO,
+  LogoutDTO,
+} from './dto';
 
 @ApiBearerAuth()
 @Controller('auth/v1')
@@ -39,13 +45,12 @@ export class AuthController {
   }
 
   @ApiOperation({ summary: 'Đăng xuất' })
-  @UseGuards(AuthGuard('jwt-refresh'))
-  @Get('/logout')
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/logout')
   @ApiOkResponse({ type: LoginResponseDTO })
-  async logOutCtrl(@Req() req) {
+  async logOutCtrl(@Req() req, @Body() logoutDTO: LogoutDTO) {
     const userId = req.user['id'];
-    const refresh_token = req.user['refresh_token'];
-    return await this.authService.logOutFn(userId, refresh_token);
+    return await this.authService.logOutFn(userId, logoutDTO);
   }
 
   @ApiOperation({ summary: 'Refresh token' })
