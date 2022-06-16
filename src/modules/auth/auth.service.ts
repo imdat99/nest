@@ -121,7 +121,7 @@ export class AuthService {
         isExistUser.userName as string,
       );
       delete isExistUser.passWord;
-      return { status: 200, ...tokens, ...isExistUser };
+      return { status: 200, ...tokens, user: isExistUser };
     } catch (err) {
       console.log(err);
       throw new HttpException(
