@@ -24,4 +24,8 @@ export class profileDTO {
   @ApiProperty()
   @IsOptional()
   avatarUri: string;
+
+  @ApiProperty()
+  @IsOptional()
+  role: string;
 }
