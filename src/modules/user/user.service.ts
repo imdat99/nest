@@ -23,7 +23,7 @@ export class UserService {
       ...property, // existing fields
       ...profileData, // updated fields
     });
-    delete res?.passWord;
+    // delete res?.passWord;
     return {
       status: 200,
       success: true,

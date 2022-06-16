@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsOptional } from 'class-validator';
+import { IsEmail, IsEnum, IsOptional } from 'class-validator';
+import { ROLE } from 'src/config/constant';
 
 export class profileDTO {
   id: string;
@@ -27,5 +28,6 @@ export class profileDTO {
 
   @ApiProperty()
   @IsOptional()
-  role: string;
+  @IsEnum(ROLE, { each: true })
+  role: ROLE;
 }
