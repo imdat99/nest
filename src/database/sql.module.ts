@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UserSubscriber } from 'src/entity/user.entity';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         database: configService.get('SQL_DB_NAME'),
         entities: ['dist/**/*.entity.js'],
         synchronize: true,
+        subscribers: [UserSubscriber],
         migrations: ['migration/*.js'],
         cli: {
           migrationsDir: 'migration',
