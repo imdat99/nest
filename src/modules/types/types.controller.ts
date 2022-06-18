@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -15,7 +16,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { TypesDTO } from './dto/types.dto';
+import { getTypesDTO, TypesDTO, TypesResponseDTO } from './dto/types.dto';
 import { TypesService } from './types.service';
 
 @Controller('types')
@@ -26,14 +27,14 @@ export class TypesController {
 
   @ApiOperation({ summary: 'Lấy toàn bộ ds Loài' })
   @UseGuards(AuthGuard('jwt'))
-  @ApiOkResponse({ type: TypesDTO })
-  @Get('')
-  async getAllTypes() {
-    return await this.typesService.getType();
+  @ApiOkResponse({ type: TypesResponseDTO, isArray: true })
+  @Get('/')
+  async getAllTypes(@Query() getQuery: getTypesDTO) {
+    return await this.typesService.getType(getQuery);
   }
   @ApiOperation({ summary: 'Tạo Loài' })
   @UseGuards(AuthGuard('jwt'))
-  @ApiOkResponse({ type: TypesDTO })
+  @ApiOkResponse({ type: TypesResponseDTO })
   @Post('')
   async registerTypes(@Body() typesDTO: TypesDTO) {
     return await this.typesService.registerType(typesDTO);
@@ -41,7 +42,7 @@ export class TypesController {
 
   @ApiOperation({ summary: 'Cập Nhật Loài' })
   @UseGuards(AuthGuard('jwt'))
-  @ApiOkResponse({ type: TypesDTO })
+  @ApiOkResponse({ type: TypesResponseDTO })
   @Put('/:id')
   async updateTypes(@Body() typesDTO: TypesDTO, @Param('id') id: string) {
     return await this.typesService.updateType(typesDTO, id);
