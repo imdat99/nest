@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UserSubscriber } from 'src/entity/user.entity';
+import { User, UserSubscriber } from 'src/entity/user.entity';
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ import { UserSubscriber } from 'src/entity/user.entity';
         username: configService.get('SQL_USERNAME'),
         password: configService.get('SQL_PASSWORD'),
         database: configService.get('SQL_DB_NAME'),
-        entities: ['dist/**/*.entity.js'],
+        entities: [User],
         synchronize: true,
         subscribers: [UserSubscriber],
         migrations: ['migration/*.js'],
