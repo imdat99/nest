@@ -1,20 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import response from 'src/common/response/response-func';
 import { User } from 'src/entity/user.entity';
 import { Repository } from 'typeorm';
 import { profileDTO } from './dto';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
+  constructor(@InjectRepository(User) private userRepo: Repository<User>) { }
 
   async getProfile(id: string) {
     const profile = await this.userRepo.findOneBy({ id });
     delete profile.passWord;
-    return {
-      status: 200,
-      ...profile,
-    };
+    return response(200, profile);
   }
 
   async updatePrrofile(id: string, profileData: profileDTO) {
@@ -24,10 +22,6 @@ export class UserService {
       ...profileData, // updated fields
     });
     // delete res?.passWord;
-    return {
-      status: 200,
-      success: true,
-      res,
-    };
+    return response(200, res);
   }
 }

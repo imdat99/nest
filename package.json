@@ -47,6 +47,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "swagger-ui-express": "^4.4.0",
+    "sweetalert2": "^11.4.17",
     "typeorm": "^0.3.6"
   },
   "devDependencies": {
