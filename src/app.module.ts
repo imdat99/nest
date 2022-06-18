@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { SqlModule } from './database/sql.module';
 import { AuthModule, UserModule } from './modules';
 import { TypesModule } from './modules/types/types.module';
+import { SpecieModule } from './modules/specie/specie.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -14,6 +15,7 @@ import { TypesModule } from './modules/types/types.module';
     AuthModule,
     UserModule,
     TypesModule,
+    SpecieModule,
   ],
   controllers: [],
   providers: [],
