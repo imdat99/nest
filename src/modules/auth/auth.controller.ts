@@ -4,6 +4,7 @@ import {
   Get,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -22,6 +23,8 @@ import {
   passWordDTO,
   signUpDTO,
   LogoutDTO,
+  ForgotDTO,
+  verifyOtpDTO,
 } from './dto';
 
 @ApiBearerAuth()
@@ -71,5 +74,19 @@ export class AuthController {
   async changePassWord(@Req() req, @Body() passDto: passWordDTO) {
     const userId = req.user['id'];
     return await this.authService.chagePasss(userId, passDto);
+  }
+
+  @ApiOperation({ summary: 'Quên mật khẩu' })
+  @Get('/forgot')
+  @ApiOkResponse({ type: sucessResponseDTO })
+  async forgotPW(@Query() forgotDTO: ForgotDTO) {
+    return await this.authService.forgotPW(forgotDTO);
+  }
+
+  @ApiOperation({ summary: 'Verify otp' })
+  @Post('/forgot')
+  @ApiOkResponse({ type: sucessResponseDTO })
+  async verifyOTP(@Body() otpDTO: verifyOtpDTO) {
+    return await this.authService.verifyOTP(otpDTO);
   }
 }
