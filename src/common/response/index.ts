@@ -1,1 +1,1 @@
-export * from './response-func'
+export * from './response-func';

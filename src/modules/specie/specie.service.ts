@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import response from 'src/common/response/response-func';
+import response, { paginateResponse } from 'src/common/response/response-func';
 import { Specie } from 'src/entity/specie.entity';
 import { Types } from 'src/entity/type.entity';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { getSpeciesDTO, SpecieDTO } from './dto';
 
 @Injectable()
@@ -14,17 +14,18 @@ export class SpecieService {
   ) {}
 
   async getSpecie(getSpeciesQuery: getSpeciesDTO) {
-    if (getSpeciesQuery.search) {
-      const searchData = await this.specieRepo
-        .createQueryBuilder('Types')
-        .where('Types.name like :name', { name: `%${getSpeciesQuery.search}%` })
-        .getMany();
-      return response(200, searchData);
-    }
-    const type = await this.specieRepo.find({
-      where: { id: getSpeciesQuery?.id, name: getSpeciesQuery.name },
+    const take = getSpeciesQuery.limit || 10;
+    const page = getSpeciesQuery.page || 1;
+    const skip = (page - 1) * take;
+    const keyword = getSpeciesQuery.search || '';
+
+    const data = await this.specieRepo.findAndCount({
+      where: { name: Like('%' + keyword + '%') },
+      order: { name: getSpeciesQuery.sortBy ? 'DESC' : 'ASC' },
+      take: take,
+      skip: skip,
     });
-    return response(200, type);
+    return paginateResponse(data, page, take);
   }
 
   async createSpecie(specie: SpecieDTO) {
