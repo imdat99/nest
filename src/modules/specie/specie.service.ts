@@ -11,10 +11,10 @@ export class SpecieService {
   constructor(
     @InjectRepository(Specie) private specieRepo: Repository<Specie>,
     @InjectRepository(Types) private typeRepo: Repository<Types>,
-  ) {}
+  ) { }
 
   async getSpecie(getSpeciesQuery: getSpeciesDTO) {
-    const take = getSpeciesQuery.limit || 10;
+    const take = getSpeciesQuery.limit || 999;
     const page = getSpeciesQuery.page || 1;
     const skip = (page - 1) * take;
     const keyword = getSpeciesQuery.search || '';

@@ -6,8 +6,10 @@ import {
   EventSubscriber,
   InsertEvent,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Pet } from './pet.entity';
 import { Types } from './type.entity';
 
 @Entity()
@@ -23,6 +25,20 @@ export class Specie {
     onDelete: 'SET NULL',
   })
   type: Types;
+
+
+
+  @OneToMany(() => Pet, (pet) => pet.specie, {
+    cascade: true,
+  })
+  pets: Pet[];
+
+  addPet(pet?: Pet) {
+    if (this.pets == null) {
+      this.pets = new Array<Pet>();
+    }
+    this.pets.push(pet);
+  }
 
   @Column({ unique: true })
   name: string;

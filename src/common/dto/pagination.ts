@@ -9,13 +9,13 @@ export enum LettersEnum {
 
 export class PaginationQuery {
   @ApiProperty({
-    minimum: 0,
+    minimum: 1,
     maximum: 10000,
     title: 'Page',
     exclusiveMaximum: true,
     exclusiveMinimum: true,
     format: 'int32',
-    default: 0,
+    default: 1,
     required: false,
   })
   @IsOptional()

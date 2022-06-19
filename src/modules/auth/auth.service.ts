@@ -24,7 +24,7 @@ export class AuthService {
     private jwtService: JwtService,
     @InjectModel('rtArray') private rtArrayModel: Model<RefreshTokenDocument>,
     private config: ConfigService,
-  ) {}
+  ) { }
 
   async createRtArray(id: string): Promise<rtArr> {
     const createdRtArr = new this.rtArrayModel({
@@ -52,7 +52,7 @@ export class AuthService {
         },
         {
           secret: this.config.get<string>('ACCESTOKEN_TOKEN_SECRET'),
-          expiresIn: 60 * 60,
+          // expiresIn: 60 * 60 ,
         },
       ),
       this.jwtService.signAsync(
