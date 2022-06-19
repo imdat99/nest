@@ -15,14 +15,15 @@ export class PetController {
   @UseGuards(AuthGuard('jwt'))
   @ApiOkResponse({ type: PetResponseDTO, isArray: true })
   @Get('/')
-  async getAllCustomer(@Query() getQuery: getPetDTO) {
+  async getAllPet(@Query() getQuery: getPetDTO) {
+
     return await this.customerService.getPet(getQuery);
   }
   @ApiOperation({ summary: 'Tạo Thú' })
   @UseGuards(AuthGuard('jwt'))
   @ApiOkResponse({ type: PetResponseDTO })
   @Post('')
-  async registerCustomer(@Body() petDTO: PetDTO) {
+  async registerPet(@Body() petDTO: PetDTO) {
     return await this.customerService.createPet(petDTO);
   }
 

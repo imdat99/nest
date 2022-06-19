@@ -22,6 +22,7 @@ export class CustomerService {
       order: { name: getQuery.sortBy ? 'DESC' : 'ASC' },
       take: take,
       skip: skip,
+      relations: ['pets'],
     });
     return paginateResponse(data, page, take);
   }

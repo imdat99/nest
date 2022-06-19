@@ -36,7 +36,7 @@ export class Customer {
   address: string;
 
   @OneToMany(() => Pet, (pet) => pet.customer, {
-    cascade: true,
+    // cascade: true,
   })
   pets: Pet[];
 

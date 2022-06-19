@@ -28,6 +28,8 @@ export class PetService {
       take: take,
       skip: skip,
     });
+    console.log(data);
+
     return paginateResponse(data, page, take);
   }
   async createPet(pet: PetDTO) {
@@ -45,7 +47,9 @@ export class PetService {
     const newPet = await this.petRepo.create(pet as any);
     specie.addPet(newPet as any);
     customer.addPet(newPet as any)
+
     await this.specieRepo.save({ ...specie });
+    await this.customerRepo.save({ ...customer })
     return response(200, newPet);
   }
 

@@ -29,7 +29,7 @@ export class Pet {
   })
   customer: Customer;
 
-  @OneToOne(() => Specie, (specie) => specie.pets, {
+  @ManyToOne(() => Specie, (specie) => specie.pets, {
     eager: true,
     onDelete: 'SET NULL',
   })
