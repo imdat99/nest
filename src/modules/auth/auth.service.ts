@@ -8,14 +8,24 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as otpGenerator from 'otp-generator';
 import * as argon2 from 'argon2';
 import { Model } from 'mongoose';
 import { MSG } from 'src/config/constant';
 import { User } from 'src/entity/user.entity';
 import { Repository } from 'typeorm';
-import { LoginDTO, LogoutDTO, passWordDTO, signUpDTO } from './dto';
+import {
+  ForgotDTO,
+  LoginDTO,
+  LogoutDTO,
+  passWordDTO,
+  signUpDTO,
+  verifyOtpDTO,
+} from './dto';
+import { otpDocument } from './schema/otp.schema';
 import { RefreshTokenDocument } from './schema/refreshtoken.schema';
 import { rtArr, Tokens } from './type';
+import sendMail from '../../common/tools/sendMail';
 
 @Injectable()
 export class AuthService {
@@ -24,6 +34,7 @@ export class AuthService {
     private jwtService: JwtService,
     @InjectModel('rtArray') private rtArrayModel: Model<RefreshTokenDocument>,
     private config: ConfigService,
+    @InjectModel('otp') private otpModel: Model<otpDocument>,
   ) { }
 
   async createRtArray(id: string): Promise<rtArr> {
@@ -32,12 +43,6 @@ export class AuthService {
       refreshTokenArr: [],
     });
     return createdRtArr.save();
-  }
-  async updateRtArray(id: string, refreshToken: string): Promise<rtArr> {
-    return await this.rtArrayModel.findOneAndUpdate(
-      { id },
-      { $pull: { refreshTokenArr: { $in: [refreshToken] } } },
-    );
   }
 
   async getTokens(
@@ -76,6 +81,59 @@ export class AuthService {
       access_token: at,
       refresh_token: rt,
     };
+  }
+
+  async genOTP(id: string) {
+    const otp = await otpGenerator.generate(6, {
+      lowerCaseAlphabets: false,
+      upperCaseAlphabets: false,
+      specialChars: false,
+    });
+    const findIdOtp = await this.otpModel.findOne({ id });
+    if (findIdOtp) {
+      await this.otpModel.findOneAndUpdate({ id }, { otp });
+    } else {
+      const otpDb = new this.otpModel({ id, otp });
+      await otpDb.save();
+    }
+    return otp;
+  }
+
+  async forgotPW(forgotDTO: ForgotDTO) {
+    const isExist = await this.userRepo.findOneBy({
+      id: forgotDTO.id,
+      userName: forgotDTO.userName,
+    });
+    if (isExist) {
+      const otp = await this.genOTP(isExist.id);
+      const message = await sendMail(isExist.email, otp);
+      return {
+        status: 200,
+        message,
+      };
+    } else {
+      return new HttpException(
+        MSG.FRONTEND.USERNAME_NOT_EXIST,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    // return response(200, isExist);
+  }
+
+  async verifyOTP(otpDTO: verifyOtpDTO) {
+    const findIdOtp = await this.otpModel.findOne({ otp: otpDTO.otp });
+    if (findIdOtp) {
+      await this.otpModel.findOneAndDelete({ otp: otpDTO.otp });
+      const user = await this.userRepo.findOneBy({ id: findIdOtp.id });
+      const tokens = await this.getTokens(
+        user.id as string,
+        user.userName as string,
+      );
+      delete user.passWord;
+      return { status: 200, ...tokens, user: user };
+    } else {
+      return new HttpException('Mã OTP không tồn tại', HttpStatus.NOT_FOUND);
+    }
   }
 
   async signUpFn(dto: signUpDTO) {

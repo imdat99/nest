@@ -41,6 +41,8 @@
     "helmet": "^5.1.0",
     "mongoose": "^6.3.8",
     "mysql2": "^2.3.3",
+    "nodemailer": "^6.7.5",
+    "otp-generator": "^4.0.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "reflect-metadata": "^0.1.13",

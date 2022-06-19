@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/entity/user.entity';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { otpSchema } from './schema/otp.schema';
 import { RefreshTokenSchema } from './schema/refreshtoken.schema';
 import { AtStrategy, RtStrategy } from './strategies';
 
@@ -14,6 +15,7 @@ import { AtStrategy, RtStrategy } from './strategies';
     JwtModule.register({}),
     MongooseModule.forFeature([
       { name: 'rtArray', schema: RefreshTokenSchema },
+      { name: 'otp', schema: otpSchema },
     ]),
   ],
   controllers: [AuthController],
