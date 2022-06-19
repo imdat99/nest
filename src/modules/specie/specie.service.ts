@@ -20,7 +20,10 @@ export class SpecieService {
     const keyword = getSpeciesQuery.search || '';
 
     const data = await this.specieRepo.findAndCount({
-      where: { name: Like('%' + keyword + '%') },
+      where: {
+        name: Like('%' + keyword + '%') || getSpeciesQuery.name,
+        id: getSpeciesQuery.id,
+      },
       order: { name: getSpeciesQuery.sortBy ? 'DESC' : 'ASC' },
       take: take,
       skip: skip,
