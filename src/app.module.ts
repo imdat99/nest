@@ -5,6 +5,8 @@ import { SqlModule } from './database/sql.module';
 import { AuthModule, UserModule } from './modules';
 import { TypesModule } from './modules/types/types.module';
 import { SpecieModule } from './modules/specie/specie.module';
+import { CustomerModule } from './modules/customer/customer.module';
+import { PetModule } from './modules/pet/pet.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -16,6 +18,8 @@ import { SpecieModule } from './modules/specie/specie.module';
     UserModule,
     TypesModule,
     SpecieModule,
+    CustomerModule,
+    PetModule,
   ],
   controllers: [],
   providers: [],

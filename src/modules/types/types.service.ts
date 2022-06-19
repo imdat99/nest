@@ -7,10 +7,10 @@ import { getTypesDTO, TypesDTO } from './dto/types.dto';
 
 @Injectable()
 export class TypesService {
-  constructor(@InjectRepository(Types) private typeRepo: Repository<Types>) {}
+  constructor(@InjectRepository(Types) private typeRepo: Repository<Types>) { }
 
   async getType(getQuery?: getTypesDTO) {
-    const take = getQuery.limit || 10;
+    const take = getQuery.limit || 999;
     const page = getQuery.page || 1;
     const skip = (page - 1) * take;
     const keyword = getQuery.search || '';
