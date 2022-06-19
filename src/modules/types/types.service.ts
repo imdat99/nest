@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import response from 'src/common/response/response-func';
+import response, { paginateResponse } from 'src/common/response/response-func';
 import { Types } from 'src/entity/type.entity';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { getTypesDTO, TypesDTO } from './dto/types.dto';
 
 @Injectable()
@@ -10,17 +10,18 @@ export class TypesService {
   constructor(@InjectRepository(Types) private typeRepo: Repository<Types>) {}
 
   async getType(getQuery?: getTypesDTO) {
-    if (getQuery.search) {
-      const searchData = await this.typeRepo
-        .createQueryBuilder('Types')
-        .where('Types.name like :name', { name: `%${getQuery.search}%` })
-        .getMany();
-      return response(200, searchData);
-    }
-    const type = await this.typeRepo.find({
-      where: { id: getQuery?.id, name: getQuery.name },
+    const take = getQuery.limit || 10;
+    const page = getQuery.page || 1;
+    const skip = (page - 1) * take;
+    const keyword = getQuery.search || '';
+
+    const data = await this.typeRepo.findAndCount({
+      where: { name: Like('%' + keyword + '%') },
+      order: { name: getQuery.sortBy ? 'DESC' : 'ASC' },
+      take: take,
+      skip: skip,
     });
-    return response(200, type);
+    return paginateResponse(data, page, take);
   }
 
   async registerType(dto: TypesDTO) {
