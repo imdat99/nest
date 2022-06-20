@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CustomerService } from './customer.service';
@@ -28,13 +28,13 @@ export class CustomerController {
     return await this.customerService.registerCustomer(customerDTO);
   }
 
-  // @ApiOperation({ summary: 'Cập Nhật Loài' })
-  // @UseGuards(AuthGuard('jwt'))
-  // @ApiOkResponse({ type: TypesResponseDTO })
-  // @Put('/:id')
-  // async updateTypes(@Body() typesDTO: TypesDTO, @Param('id') id: string) {
-  //   return await this.typesService.updateType(typesDTO, id);
-  // }
+  @ApiOperation({ summary: 'Cập Nhật Khách Hàng' })
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOkResponse({ type: CustomerResponseDTO })
+  @Put('/:id')
+  async updateTypes(@Body() customerDTO: CustomerDTO, @Param('id') id: string) {
+    return await this.customerService.updateCustomer(customerDTO, id);
+  }
 
   // @ApiOperation({ summary: 'Xóa Loài' })
   // @UseGuards(AuthGuard('jwt'))

@@ -37,5 +37,14 @@ export class CustomerService {
 
     return response(200, newCustomer);
   }
+  async updateCustomer(dto: CustomerDTO, id: string) {
+    const property = await this.customerRepo.findOneBy({ id });
+    const res = await this.customerRepo.save({
+      ...property, // existing fields
+      ...dto, // updated fields
+    });
+    // delete res?.passWord;
+    return response(200, res);
 
+  }
 }

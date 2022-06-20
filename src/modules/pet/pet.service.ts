@@ -52,6 +52,49 @@ export class PetService {
     await this.customerRepo.save({ ...customer })
     return response(200, newPet);
   }
+  async updatePet(pet: PetDTO, id: string) {
+    if (pet.idSpecie && pet.idCustomer) {
+      const specie = await this.specieRepo.findOne({
+        where: { id: pet.idSpecie },
+        relations: ['pets'],
+      });
+      const property = await this.petRepo.findOneBy({ id });
+      delete pet.idSpecie;
+      const update = await this.petRepo.save({
+        ...property,
+        ...pet,
+      });
+      // .addSpecie(update as any);
+      specie.addPet(update as any)
+      await this.specieRepo.save({ ...specie });
+      const updated = await this.specieRepo.findOneBy({ id });
+      return response(200, updated);
+    }
+    if (pet.idCustomer) {
+      const customer = await this.customerRepo.findOne({
+        where: { id: pet.idCustomer },
+        relations: ['pets'],
+      });
+      const property = await this.petRepo.findOneBy({ id });
+      delete pet.idCustomer;
+      const update = await this.petRepo.save({
+        ...property,
+        ...pet,
+      });
+      // .addSpecie(update as any);
+      customer.addPet(update as any)
+      await this.customerRepo.save({ ...customer });
+      const updated = await this.specieRepo.findOneBy({ id });
+      return response(200, updated);
+
+    }
+    const property = await this.petRepo.findOneBy({ id });
+    const updated = await this.petRepo.save({
+      ...property,
+      ...pet,
+    });
+    return response(200, updated);
+  }
 
 
 }
