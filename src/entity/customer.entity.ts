@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ESexOfHuman } from 'src/config/constant';
 import {
   Column,
   Entity,
@@ -22,6 +23,15 @@ export class Customer {
 
   @Column({ unique: true })
   name: string;
+
+  @Column({
+    type: 'enum',
+    enum: ESexOfHuman,
+  })
+  sex: ESexOfHuman;
+
+  @Column()
+  dob: Date;
 
   @Column()
   numberPhone: string;

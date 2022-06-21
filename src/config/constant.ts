@@ -12,3 +12,7 @@ export enum ESexOfPet {
 
   female = 'Cái',
 };
+export enum ESexOfHuman {
+  male = 'male',
+  female = 'female'
+}
