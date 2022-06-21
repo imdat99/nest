@@ -40,6 +40,9 @@ export class Customer {
   email: string;
 
   @Column()
+  avatarUrl: string;
+
+  @Column()
   IdNumber: string;
 
   @Column()

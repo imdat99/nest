@@ -7,6 +7,7 @@ import { TypesModule } from './modules/types/types.module';
 import { SpecieModule } from './modules/specie/specie.module';
 import { CustomerModule } from './modules/customer/customer.module';
 import { PetModule } from './modules/pet/pet.module';
+import { ScheduleModule } from './modules/schedule/schedule.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -20,6 +21,7 @@ import { PetModule } from './modules/pet/pet.module';
     SpecieModule,
     CustomerModule,
     PetModule,
+    ScheduleModule,
   ],
   controllers: [],
   providers: [],

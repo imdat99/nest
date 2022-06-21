@@ -14,6 +14,7 @@ import { Types } from './type.entity';
 import { Specie } from './specie.entity';
 import { ESexOfPet } from 'src/config/constant';
 import { Customer } from './customer.entity';
+import { Schedule } from './schedule.entity';
 
 @Entity()
 export class Pet {
@@ -40,11 +41,26 @@ export class Pet {
   @Column({ unique: true })
   name: string;
 
+  @Column()
+  avatarUrl: string;
+
   @Column({
     type: 'enum',
     enum: ESexOfPet,
   })
   sex: ESexOfPet;
+
+  @OneToMany(() => Schedule, (schedule) => schedule.pet, {
+    cascade: true,
+  })
+  schedules: Schedule[];
+
+  addSchedule(schedule?: Schedule) {
+    if (this.schedules == null) {
+      this.schedules = new Array<Schedule>();
+    }
+    this.schedules.push(schedule);
+  }
 
   @Column()
   desc: string;

@@ -26,8 +26,6 @@ export class Specie {
   })
   type: Types;
 
-
-
   @OneToMany(() => Pet, (pet) => pet.specie, {
     cascade: true,
   })
