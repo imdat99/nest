@@ -23,7 +23,10 @@ export class PetService {
     const keyword = getQuery.search || '';
 
     const data = await this.petRepo.findAndCount({
-      where: { name: Like('%' + keyword + '%') },
+      where: {
+        name: Like('%' + keyword + '%'),
+        id: getQuery.id,
+      },
       order: { name: getQuery.sortBy ? 'DESC' : 'ASC' },
       take: take,
       skip: skip,
