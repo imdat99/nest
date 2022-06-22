@@ -6,12 +6,10 @@ import {
   EntitySubscriberInterface,
   EventSubscriber,
   InsertEvent,
-  JoinColumn,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Pet } from './pet.entity';
-import { Specie } from './specie.entity';
 
 @Entity()
 export class Customer {

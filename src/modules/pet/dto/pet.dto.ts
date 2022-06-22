@@ -1,16 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDate, IsEnum, IsOptional } from 'class-validator';
 import { PaginationQuery } from 'src/common/dto';
 import { ESexOfPet } from 'src/config/constant';
 
 export class PetDTO {
   @ApiProperty()
   @IsOptional()
-  idCustomer: string;
+  name: string;
 
   @ApiProperty()
   @IsOptional()
-  name: string;
+  avatarUrl: string;
 
   @ApiProperty()
   @IsOptional()
@@ -19,11 +20,16 @@ export class PetDTO {
 
   @ApiProperty()
   @IsOptional()
+  desc: string;
+
+  @ApiProperty()
+  @IsOptional()
   idSpecie: string;
 
   @ApiProperty()
   @IsOptional()
-  desc: string;
+  idCustomer: string;
+
 }
 export class PetResponseDTO extends PetDTO {
   @ApiProperty()

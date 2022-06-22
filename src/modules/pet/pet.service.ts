@@ -28,8 +28,6 @@ export class PetService {
       take: take,
       skip: skip,
     });
-    console.log(data);
-
     return paginateResponse(data, page, take);
   }
   async createPet(pet: PetDTO) {

@@ -10,7 +10,6 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Types } from './type.entity';
 import { Specie } from './specie.entity';
 import { ESexOfPet } from 'src/config/constant';
 import { Customer } from './customer.entity';
@@ -23,6 +22,32 @@ export class Pet {
 
   @Column()
   id: string;
+
+  @Column()
+  name: string;
+
+  @Column()
+  avatarUrl: string;
+
+  @Column({
+    type: 'enum',
+    enum: ESexOfPet,
+  })
+  sex: ESexOfPet;
+
+  @Column()
+  desc: string;
+
+  @OneToMany(() => Schedule, (schedule) => schedule.pet, {
+    cascade: true,
+  })
+  schedules: Schedule[];
+  addSchedule(schedule?: Schedule) {
+    if (this.schedules == null) {
+      this.schedules = new Array<Schedule>();
+    }
+    this.schedules.push(schedule);
+  }
 
   @ManyToOne(() => Customer, (customer) => customer.pets, {
     eager: true,
@@ -37,33 +62,6 @@ export class Pet {
   specie: Specie;
 
 
-
-  @Column({ unique: true })
-  name: string;
-
-  @Column()
-  avatarUrl: string;
-
-  @Column({
-    type: 'enum',
-    enum: ESexOfPet,
-  })
-  sex: ESexOfPet;
-
-  @OneToMany(() => Schedule, (schedule) => schedule.pet, {
-    cascade: true,
-  })
-  schedules: Schedule[];
-
-  addSchedule(schedule?: Schedule) {
-    if (this.schedules == null) {
-      this.schedules = new Array<Schedule>();
-    }
-    this.schedules.push(schedule);
-  }
-
-  @Column()
-  desc: string;
 }
 
 @EventSubscriber()

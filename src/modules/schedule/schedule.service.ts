@@ -38,7 +38,8 @@ export class ScheduleService {
       relations: ['schedules'],
     });
     delete schedule.idPet;
-    const newSchedule = await this.petRepo.create(schedule as any);
+    const newSchedule = await this.scheduleRepo.create(schedule as any);
+
     pet.addSchedule(newSchedule as any);
     await this.petRepo.save({ ...pet });
     return response(200, newSchedule);

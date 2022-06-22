@@ -1,18 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { ESexOfHuman } from 'src/config/constant';
+import { Type } from 'class-transformer';
 import {
   Column,
   Entity,
   EntitySubscriberInterface,
   EventSubscriber,
   InsertEvent,
-  JoinColumn,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Pet } from './pet.entity';
-import { Specie } from './specie.entity';
 
 @Entity()
 export class Schedule {
@@ -21,6 +18,7 @@ export class Schedule {
 
   @Column()
   id: string;
+
 
   @Column()
   date: Date;

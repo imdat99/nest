@@ -1,11 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDate, IsOptional } from 'class-validator';
 import { PaginationQuery } from 'src/common/dto';
 import { Omit } from 'src/common/tools/helper';
 
 export class ScheduleDTO {
+
   @ApiProperty()
   @IsOptional()
+  @Type(() => Date)
+  @IsDate()
   date: Date;
 
   @ApiProperty()

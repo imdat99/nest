@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDate, IsEnum, IsOptional } from 'class-validator';
 import { PaginationQuery } from 'src/common/dto';
+import { ESexOfHuman } from 'src/config/constant';
 
 export class CustomerDTO {
   @ApiProperty()
@@ -17,7 +19,22 @@ export class CustomerDTO {
 
   @ApiProperty()
   @IsOptional()
+  @IsEnum(ESexOfHuman, { each: true })
+  sex: ESexOfHuman;
+
+  @ApiProperty()
+  @IsOptional()
+  @Type(() => Date)
+  @IsDate()
+  dob: Date;
+
+  @ApiProperty()
+  @IsOptional()
   IdNumber: string;
+
+  @ApiProperty()
+  @IsOptional()
+  avatarUrl: string;
 
   @ApiProperty()
   @IsOptional()
