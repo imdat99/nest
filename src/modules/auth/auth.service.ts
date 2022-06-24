@@ -151,10 +151,8 @@ export class AuthService {
         loginDTO.passWord,
       );
       if (!passwordValid) {
-        return new HttpException(
-          MSG.FRONTEND.AUTH_FAILED_WRONG_PASSWORD,
-          HttpStatus.NOT_FOUND,
-        );
+        return response(HttpStatus.NOT_FOUND, MSG.FRONTEND.AUTH_FAILED_WRONG_PASSWORD)
+
       }
       const tokens = await this.getTokens(
         isExistUser.id as string,
