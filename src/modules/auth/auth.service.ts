@@ -260,9 +260,9 @@ export class AuthService {
         passWord: hashedPassword, // updated fields
       });
       delete user.passWord;
-      return { status: 200, user: user };
+      return response(200, 'Lấy lại mật khẩu thành công!')
     } else {
-      return new HttpException('Mã OTP không tồn tại', HttpStatus.NOT_FOUND);
+      return response(404, 'Mã OTP không tồn tại')
     }
   }
 }
