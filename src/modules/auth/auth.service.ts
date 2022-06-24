@@ -27,6 +27,7 @@ import { otpDocument } from './schema/otp.schema';
 import { RefreshTokenDocument } from './schema/refreshtoken.schema';
 import { rtArr, Tokens } from './type';
 import sendMail from '../../common/tools/sendMail';
+import response from 'src/common/response/response-func';
 
 @Injectable()
 export class AuthService {
@@ -108,15 +109,9 @@ export class AuthService {
     if (isExist) {
       const otp = await this.genOTP(isExist.id);
       const message = await sendMail(isExist.email, otp);
-      return {
-        status: 200,
-        message,
-      };
+      return response(200, message)
     } else {
-      return new HttpException(
-        MSG.FRONTEND.USERNAME_NOT_EXIST,
-        HttpStatus.NOT_FOUND,
-      );
+      return response(404, MSG.FRONTEND.USERNAME_NOT_EXIST)
     }
     // return response(200, isExist);
   }
@@ -222,7 +217,7 @@ export class AuthService {
     }
   }
 
-  async chagePasss(id: string, passDTO: changePasswordDTO) {
+  async changePass(id: string, passDTO: changePasswordDTO) {
     if (passDTO.newPass === passDTO.oldWord) {
       return new HttpException(
         MSG.FRONTEND.DOUPLICATE_PASSWORD,

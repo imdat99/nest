@@ -74,7 +74,7 @@ export class AuthController {
   @ApiOkResponse({ type: sucessResponseDTO })
   async changePassWord(@Req() req, @Body() passDto: changePasswordDTO) {
     const userId = req.user['id'];
-    return await this.authService.chagePasss(userId, passDto);
+    return await this.authService.changePass(userId, passDto);
   }
 
   @ApiOperation({ summary: 'Quên mật khẩu' })
