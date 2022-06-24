@@ -163,7 +163,6 @@ export class AuthService {
       delete isExistUser.passWord;
       return { status: 200, ...tokens, user: isExistUser };
     } catch (err) {
-      console.log(err);
       throw new HttpException(
         MSG.FRONTEND.USERNAME_NOT_EXIST,
         HttpStatus.NOT_FOUND,
@@ -179,17 +178,11 @@ export class AuthService {
           { id },
           { $pull: { refreshTokenArr: { $in: [logoutDTO.refresh_token] } } },
         );
-        return {
-          status: 200,
-          success: true,
-          access_token: '',
-          refresh_token: '',
-        };
+        return response(HttpStatus.OK, { access_token: '', refresh_token: '' })
       } else {
-        return new HttpException(
-          MSG.RESPONSE.BAD_REQUEST,
-          HttpStatus.UNAUTHORIZED,
-        );
+
+        return response(HttpStatus.UNAUTHORIZED, MSG.RESPONSE.BAD_REQUEST)
+
       }
     } catch (err) {
       throw new HttpException(err.message, HttpStatus.EXPECTATION_FAILED);
@@ -207,10 +200,8 @@ export class AuthService {
         const tokens = await this.getTokens(id, userName);
         return { status: 200, ...tokens };
       } else {
-        return new HttpException(
-          MSG.RESPONSE.BAD_REQUEST,
-          HttpStatus.UNAUTHORIZED,
-        );
+        return response(HttpStatus.UNAUTHORIZED, MSG.RESPONSE.BAD_REQUEST)
+
       }
     } catch (err) {
       throw new HttpException(err.message, HttpStatus.EXPECTATION_FAILED);
@@ -219,10 +210,9 @@ export class AuthService {
 
   async changePass(id: string, passDTO: changePasswordDTO) {
     if (passDTO.newPass === passDTO.oldWord) {
-      return new HttpException(
-        MSG.FRONTEND.DOUPLICATE_PASSWORD,
-        HttpStatus.EXPECTATION_FAILED,
-      );
+      return response(HttpStatus.EXPECTATION_FAILED, MSG.FRONTEND.DOUPLICATE_PASSWORD)
+
+
     }
     const property = await this.userRepo.findOneBy({ id });
     const passwordValid = await argon2.verify(
@@ -230,10 +220,8 @@ export class AuthService {
       passDTO.oldWord,
     );
     if (!passwordValid) {
-      return new HttpException(
-        MSG.FRONTEND.WRONG_PASSWORD,
-        HttpStatus.EXPECTATION_FAILED,
-      );
+      return response(HttpStatus.EXPECTATION_FAILED, MSG.FRONTEND.WRONG_PASSWORD)
+
     }
 
     const hashedPassword = await argon2.hash(passDTO.newPass);
@@ -241,12 +229,8 @@ export class AuthService {
       ...property, // existing fields
       passWord: hashedPassword, // updated fields
     });
+    return response(HttpStatus.OK, MSG.RESPONSE.SUCCESS)
 
-    return {
-      status: 200,
-      success: true,
-      message: MSG.RESPONSE.SUCCESS,
-    };
   }
 
   async verifyOTP(otpDTO: verifyOtpDTO) {
@@ -260,9 +244,9 @@ export class AuthService {
         passWord: hashedPassword, // updated fields
       });
       delete user.passWord;
-      return response(200, 'Lấy lại mật khẩu thành công!')
+      return response(HttpStatus.OK, 'Lấy lại mật khẩu thành công!')
     } else {
-      return response(404, 'Mã OTP không tồn tại')
+      return response(HttpStatus.NOT_FOUND, 'Mã OTP không tồn tại')
     }
   }
 }
