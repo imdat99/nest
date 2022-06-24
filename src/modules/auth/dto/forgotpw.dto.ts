@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional, Length } from 'class-validator';
 
 export class ForgotDTO {
   @ApiProperty({
@@ -21,4 +21,12 @@ export class verifyOtpDTO {
   })
   @IsNotEmpty()
   otp: string;
+
+  @ApiProperty({
+    required: true,
+  })
+  @Length(4, 64)
+  @IsNotEmpty()
+  @IsOptional()
+  newPassword: string;
 }

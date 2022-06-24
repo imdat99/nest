@@ -1,18 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsEnum, IsNotEmpty, Length } from 'class-validator';
-import { ROLE } from 'src/config/constant';
+import { ESexOfHuman, ROLE } from 'src/config/constant';
 
 export class signUpDTO {
   @ApiProperty()
   @Length(4, 64)
   @IsNotEmpty()
   userName: string;
-
-  @ApiProperty()
-  @Length(4, 64)
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
 
   @Length(4, 64)
   @ApiProperty()
@@ -21,6 +15,42 @@ export class signUpDTO {
 
   @ApiProperty()
   @IsNotEmpty()
+  name: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  dob: Date;
+
+  @ApiProperty()
+  @Length(4, 64)
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  phoneNumber: string;
+
+  @ApiProperty()
+  avatarUrl: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
   @IsEnum(ROLE, { each: true })
   role: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsEnum(ESexOfHuman, { each: true })
+  sex: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  idNumber: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  address: string;
+
 }
+

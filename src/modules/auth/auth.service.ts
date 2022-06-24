@@ -18,9 +18,10 @@ import {
   ForgotDTO,
   LoginDTO,
   LogoutDTO,
-  passWordDTO,
+  changePasswordDTO,
   signUpDTO,
   verifyOtpDTO,
+
 } from './dto';
 import { otpDocument } from './schema/otp.schema';
 import { RefreshTokenDocument } from './schema/refreshtoken.schema';
@@ -120,21 +121,7 @@ export class AuthService {
     // return response(200, isExist);
   }
 
-  async verifyOTP(otpDTO: verifyOtpDTO) {
-    const findIdOtp = await this.otpModel.findOne({ otp: otpDTO.otp });
-    if (findIdOtp) {
-      await this.otpModel.findOneAndDelete({ otp: otpDTO.otp });
-      const user = await this.userRepo.findOneBy({ id: findIdOtp.id });
-      const tokens = await this.getTokens(
-        user.id as string,
-        user.userName as string,
-      );
-      delete user.passWord;
-      return { status: 200, ...tokens, user: user };
-    } else {
-      return new HttpException('Mã OTP không tồn tại', HttpStatus.NOT_FOUND);
-    }
-  }
+
 
   async signUpFn(dto: signUpDTO) {
     try {
@@ -235,7 +222,7 @@ export class AuthService {
     }
   }
 
-  async chagePasss(id: string, passDTO: passWordDTO) {
+  async chagePasss(id: string, passDTO: changePasswordDTO) {
     if (passDTO.newPass === passDTO.oldWord) {
       return new HttpException(
         MSG.FRONTEND.DOUPLICATE_PASSWORD,
@@ -265,5 +252,22 @@ export class AuthService {
       success: true,
       message: MSG.RESPONSE.SUCCESS,
     };
+  }
+
+  async verifyOTP(otpDTO: verifyOtpDTO) {
+    const findIdOtp = await this.otpModel.findOne({ otp: otpDTO.otp });
+    if (findIdOtp) {
+      await this.otpModel.findOneAndDelete({ otp: otpDTO.otp });
+      const user = await this.userRepo.findOneBy({ id: findIdOtp.id });
+      const hashedPassword = await argon2.hash(otpDTO.newPassword);
+      await this.userRepo.save({
+        ...user, // existing fields
+        passWord: hashedPassword, // updated fields
+      });
+      delete user.passWord;
+      return { status: 200, user: user };
+    } else {
+      return new HttpException('Mã OTP không tồn tại', HttpStatus.NOT_FOUND);
+    }
   }
 }

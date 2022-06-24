@@ -20,7 +20,8 @@ import { AuthService } from './auth.service';
 import {
   LoginDTO,
   LoginResponseDTO,
-  passWordDTO,
+  changePasswordDTO,
+
   signUpDTO,
   LogoutDTO,
   ForgotDTO,
@@ -31,7 +32,7 @@ import {
 @Controller('auth/v1')
 @ApiTags('Auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   @ApiOperation({ summary: 'Tạo tài khoản mới' })
   @Post('/signup')
@@ -71,7 +72,7 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   @Put('/changepassword')
   @ApiOkResponse({ type: sucessResponseDTO })
-  async changePassWord(@Req() req, @Body() passDto: passWordDTO) {
+  async changePassWord(@Req() req, @Body() passDto: changePasswordDTO) {
     const userId = req.user['id'];
     return await this.authService.chagePasss(userId, passDto);
   }

@@ -25,8 +25,8 @@ const sendMail = async (email: string, otp: string) => {
     const mailOptions = {
       from: 'phieubengao@gmail.com',
       to: email,
-      subject: 'Reset Todo password',
-      text: `Your OTP: ${otp}`,
+      subject: 'Reset password',
+      text: `Your OTP: ${otp}, OTP code will expire in 5 minutes.`,
     };
 
     await transporter.sendMail(mailOptions);

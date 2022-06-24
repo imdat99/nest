@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, Length } from 'class-validator';
 
-export class passWordDTO {
+export class changePasswordDTO {
   @ApiProperty()
   @Length(4, 64)
   @IsNotEmpty()
@@ -12,3 +12,4 @@ export class passWordDTO {
   @IsNotEmpty()
   readonly oldWord: string;
 }
+

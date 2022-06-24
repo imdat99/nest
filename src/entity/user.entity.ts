@@ -38,7 +38,16 @@ export class User {
   phoneNumber: string;
 
   @Column()
-  avatarUri: string;
+  avatarUrl: string;
+
+  @Column()
+  sex: string;
+
+  @Column()
+  idNumber: string;
+
+  @Column()
+  address: string;
 
   @Column({
     type: 'enum',
