@@ -43,7 +43,7 @@ export class Customer {
   @Column()
   IdNumber: string;
 
-  @Column()
+  @Column({ type: 'longtext' })
   address: string;
 
   @OneToMany(() => Pet, (pet) => pet.customer, {

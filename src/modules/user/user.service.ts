@@ -12,6 +12,7 @@ export class UserService {
 
   async getProfile(id: string) {
     const profile = await this.userRepo.findOneBy({ id });
+    delete profile.passWord;
     return response(200, profile);
   }
 
