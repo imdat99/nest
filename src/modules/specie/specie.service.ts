@@ -23,6 +23,8 @@ export class SpecieService {
       where: {
         name: Like('%' + keyword + '%') || getSpeciesQuery.name,
         id: getSpeciesQuery.id,
+        isChecked: getSpeciesQuery.isChecked
+
       },
       order: { name: getSpeciesQuery.sortBy ? 'DESC' : 'ASC' },
       take: take,

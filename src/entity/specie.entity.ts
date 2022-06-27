@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { isChecked } from 'src/config/constant';
 import {
   Column,
   Entity,
@@ -43,6 +44,12 @@ export class Specie {
 
   @Column()
   desc: string;
+
+  @Column({
+    type: 'enum',
+    enum: isChecked,
+  })
+  isChecked: isChecked; // 1=true, 0 false
 }
 
 @EventSubscriber()

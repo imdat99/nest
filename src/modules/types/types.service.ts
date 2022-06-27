@@ -15,10 +15,12 @@ export class TypesService {
     const skip = (page - 1) * take;
     const keyword = getQuery.search || '';
 
+
     const data = await this.typeRepo.findAndCount({
       where: {
         name: Like('%' + keyword + '%') || getQuery.name,
         id: getQuery.id,
+        isChecked: getQuery.isChecked,
       },
       order: { name: getQuery.sortBy ? 'DESC' : 'ASC' },
       take: take,

@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional } from 'class-validator';
 import { PaginationQuery } from 'src/common/dto';
+import { isChecked } from 'src/config/constant';
 
 export class TypesDTO {
   @ApiProperty()
@@ -10,6 +11,11 @@ export class TypesDTO {
   @ApiProperty()
   @IsOptional()
   desc: string;
+
+  @ApiProperty()
+  @IsOptional()
+  isChecked: isChecked;
+
 }
 export class TypesResponseDTO extends TypesDTO {
   @ApiProperty()
@@ -31,4 +37,13 @@ export class getTypesDTO extends PaginationQuery {
   })
   @IsOptional()
   id: string;
+
+
+  @ApiProperty(
+    {
+      required: false,
+    }
+  )
+  @IsOptional()
+  isChecked: isChecked;
 }

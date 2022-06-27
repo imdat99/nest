@@ -16,3 +16,8 @@ export enum ESexOfHuman {
   male = 'male',
   female = 'female'
 }
+export enum isChecked {
+  TRUE = 1,
+  FALSE = 0
+
+}
