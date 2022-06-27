@@ -9,6 +9,4 @@ import { TypesService } from './types.service';
   controllers: [TypesController],
   providers: [TypesService],
 })
-export class TypesModule {
-
-}
+export class TypesModule {}

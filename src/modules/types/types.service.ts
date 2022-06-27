@@ -1,27 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import response from 'src/common/response/response-func';
+import response, { paginateResponse } from 'src/common/response/response-func';
 import { Types } from 'src/entity/type.entity';
-import { Repository } from 'typeorm';
-import { TypesDTO } from './dto/types.dto';
+import { Repository, Like } from 'typeorm';
+import { getTypesDTO, TypesDTO } from './dto/types.dto';
 
 @Injectable()
 export class TypesService {
   constructor(@InjectRepository(Types) private typeRepo: Repository<Types>) { }
 
-  async getType(id?: string) {
-    const type = await this.typeRepo.find({});
-    return response(200, type)
+  async getType(getQuery?: getTypesDTO) {
+    const take = getQuery.limit || 999;
+    const page = getQuery.page || 1;
+    const skip = (page - 1) * take;
+    const keyword = getQuery.search || '';
 
+
+    const data = await this.typeRepo.findAndCount({
+      where: {
+        name: Like('%' + keyword + '%') || getQuery.name,
+        id: getQuery.id,
+        isChecked: getQuery.isChecked,
+      },
+      order: { name: getQuery.sortBy ? 'DESC' : 'ASC' },
+      take: take,
+      skip: skip,
+    });
+    return paginateResponse(data, page, take);
   }
 
   async registerType(dto: TypesDTO) {
-    const newType = (await this.typeRepo.save(
+    const newType = await this.typeRepo.save(
       this.typeRepo.create({
         ...dto,
-
-      } as any),
-    )) as any;
+      }),
+    );
     return response(200, newType);
   }
   async updateType(dto: TypesDTO, id: string) {
@@ -31,18 +44,10 @@ export class TypesService {
       ...dto, // updated fields
     });
     // delete res?.passWord;
-    return response(200, res)
+    return response(200, res);
   }
   async deleteType(id: string) {
     await this.typeRepo.delete({ id });
     return response(200, '');
-
-
   }
-
-
-
-
-
-
 }

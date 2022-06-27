@@ -38,7 +38,16 @@ export class User {
   phoneNumber: string;
 
   @Column()
-  avatarUri: string;
+  avatarUrl: string;
+
+  @Column()
+  sex: string;
+
+  @Column()
+  idNumber: string;
+
+  @Column()
+  address: string;
 
   @Column({
     type: 'enum',
@@ -54,8 +63,10 @@ export class User {
 @Injectable()
 export class UserSubscriber implements EntitySubscriberInterface<User> {
   async afterInsert(event: InsertEvent<User>) {
-    const repo = event.manager.connection.getRepository(User);
-    event.entity.id = `NV${String(event.entity.idx).padStart(6, '0')}`;
-    repo.save(event.entity);
+    if (event.metadata.targetName === 'User') {
+      const repo = event.manager.connection.getRepository(User);
+      event.entity.id = `NV${String(event.entity.idx).padStart(6, '0')}`;
+      repo.save(event.entity);
+    }
   }
 }

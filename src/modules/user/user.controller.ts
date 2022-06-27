@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Put, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBearerAuth,
@@ -6,14 +6,14 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { profileDTO, UpdateProfileRes } from './dto';
+import { getProfileDTO, profileDTO, ProfileResponseDTO, UpdateProfileRes } from './dto';
 import { UserService } from './user.service';
 
 @Controller('user')
 @ApiBearerAuth()
 @ApiTags('user')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
 
   @ApiOperation({ summary: 'Xem profile' })
   @UseGuards(AuthGuard('jwt'))
@@ -24,12 +24,21 @@ export class UserController {
     return await this.userService.getProfile(userId);
   }
 
-  @ApiOperation({ summary: 'Cập nhật profile' })
+  // @ApiOperation({ summary: 'Cập nhật profile' })
+  // @UseGuards(AuthGuard('jwt'))
+  // @Put('/profile')
+  // @ApiOkResponse({ type: UpdateProfileRes })
+  // async updateProfile(@Req() req, @Body() profileData: profileDTO) {
+  //   const userId = req.user['id'];
+  //   return await this.userService.updateProfile(userId, profileData);
+  // }
+
+  @ApiOperation({ summary: 'Lấy danh sách nhân viên, bác sĩ' })
   @UseGuards(AuthGuard('jwt'))
-  @Put('/profile')
-  @ApiOkResponse({ type: UpdateProfileRes })
-  async updateProfile(@Req() req, @Body() profileData: profileDTO) {
-    const userId = req.user['id'];
-    return await this.userService.updatePrrofile(userId, profileData);
+  @Get('')
+  @ApiOkResponse({ type: ProfileResponseDTO })
+  async registerUser(@Query() getQuery: getProfileDTO) {
+    return await this.userService.getAllUser(getQuery);
+
   }
 }

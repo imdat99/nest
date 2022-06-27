@@ -1,9 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UserSubscriber } from 'src/entity/user.entity';
-import { TypeSubscriber } from 'src/entity/type.entity';
-
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -18,13 +15,16 @@ import { TypeSubscriber } from 'src/entity/type.entity';
         database: configService.get('SQL_DB_NAME'),
         entities: ['dist/**/*.entity.js'],
         synchronize: true,
-        subscribers: [UserSubscriber, TypeSubscriber],
+        subscribers: ['dist/**/*.entity.js'],
         migrations: ['migration/*.js'],
         cli: {
           migrationsDir: 'migration',
+        },
+        extra: {
+          charset: 'utf8mb4_unicode_ci',
         },
       }),
     }),
   ],
 })
-export class SqlModule { }
+export class SqlModule {}
