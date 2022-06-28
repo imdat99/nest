@@ -10,6 +10,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Pet } from './pet.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class Schedule {
@@ -26,11 +27,21 @@ export class Schedule {
   @Column()
   time: string;
 
+  @Column()
+  symptom: string;
+
   @ManyToOne(() => Pet, (pet) => pet.schedules, {
     eager: true,
     onDelete: 'SET NULL',
   })
   pet: Pet;
+
+  @ManyToOne(() => User, (user) => user.schedules, {
+    eager: true,
+    onDelete: 'SET NULL',
+  })
+  user: User;
+
 
 }
 

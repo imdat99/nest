@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { getAllScheduleResponseDTO, getScheduleDTO, ScheduleDTO, ScheduleResponseDTO } from './dto/schedule.dto';
+import { getAllScheduleResponseDTO, getScheduleDTO, ScheduleDTO, ScheduleResponseDTO, updateScheduleDTO } from './dto/schedule.dto';
 import { ScheduleService } from './schedule.service';
 
 @Controller('schedule')
@@ -18,12 +18,21 @@ export class ScheduleController {
   async getAllTypes(@Query() getScheduleQuery: getScheduleDTO) {
     return await this.scheduleService.getSchedule(getScheduleQuery);
   }
+
   @ApiOperation({ summary: 'Tạo lịch khám' })
   @UseGuards(AuthGuard('jwt'))
   @ApiOkResponse({ type: ScheduleResponseDTO })
   @Post('')
   async createSpecie(@Body() Schedule: ScheduleDTO) {
     return await this.scheduleService.createSchedule(Schedule)
+  }
+
+  @ApiOperation({ summary: 'Cập Nhật Lịch Khám' })
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOkResponse({ type: ScheduleResponseDTO })
+  @Put('/:id')
+  async updateTypes(@Body() updateScheduleDTO: updateScheduleDTO, @Param('id') id: string) {
+    return await this.scheduleService.updateSchedule(updateScheduleDTO, id);
   }
 
 }

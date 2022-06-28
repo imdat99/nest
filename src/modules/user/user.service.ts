@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { elementAt } from 'rxjs';
 import response, { paginateResponse } from 'src/common/response/response-func';
+import { ROLE } from 'src/config/constant';
 import { User } from 'src/entity/user.entity';
 import { Like, Repository } from 'typeorm';
 import { getProfileDTO, profileDTO } from './dto';
@@ -26,14 +27,20 @@ export class UserService {
       where: {
         name: Like('%' + keyword + '%') || getQuery.name,
         id: getQuery.id,
-      },
-      order: { name: getQuery.sortBy ? 'DESC' : 'ASC' },
+        role: ROLE.DOC    //doctor role    
+
+      }
+      ,
+      order: { id: getQuery.sortBy ? 'DESC' : 'ASC' },
       take: take,
       skip: skip,
     });
     data[0].map((el) => {
       delete el.passWord
     })
+
+
+
 
 
     return paginateResponse(data, page, take);
