@@ -33,6 +33,12 @@ export class ScheduleService {
       take: take,
       skip: skip,
     });
+    data[0].map((el) => {
+      if (el.user) {
+        delete el.user.passWord
+      }
+    })
+
     return paginateResponse(data, page, take);
   }
 
@@ -48,7 +54,6 @@ export class ScheduleService {
     });
     delete schedule.idPet;
     delete schedule.idUser;
-    delete user.passWord;
     const newSchedule = await this.scheduleRepo.create(schedule as any);
     pet.addSchedule(newSchedule as any);
     user.addSchedule(newSchedule as any)
