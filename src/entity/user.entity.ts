@@ -7,8 +7,10 @@ import {
   EntitySubscriberInterface,
   EventSubscriber,
   InsertEvent,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Schedule } from './schedule.entity';
 
 @Entity()
 export class User {
@@ -54,6 +56,18 @@ export class User {
     enum: ROLE,
   })
   role: ROLE;
+
+  @OneToMany(() => Schedule, (schedule) => schedule.user, {
+    cascade: true,
+  })
+  schedules: Schedule[];
+
+  addSchedule(schedule?: Schedule) {
+    if (this.schedules == null) {
+      this.schedules = new Array<Schedule>();
+    }
+    this.schedules.push(schedule);
+  }
 
   comparePassword: (password: string) => Promise<boolean>;
   compareResetPasswordToken: (password: string) => Promise<boolean>;

@@ -4,8 +4,8 @@ import { IsDate, IsOptional } from 'class-validator';
 import { PaginationQuery } from 'src/common/dto';
 import { Omit } from 'src/common/tools/helper';
 
-export class ScheduleDTO {
 
+export class updateScheduleDTO {
   @ApiProperty()
   @IsOptional()
   @Type(() => Date)
@@ -18,7 +18,20 @@ export class ScheduleDTO {
 
   @ApiProperty()
   @IsOptional()
+  symptom: string;
+
+}
+export class ScheduleDTO extends updateScheduleDTO {
+
+
+
+  @ApiProperty()
+  @IsOptional()
   idPet: string;
+
+  @ApiProperty()
+  @IsOptional()
+  idUser: string;
 
 }
 export class ScheduleResponseDTO extends Omit(ScheduleDTO, ['idPet']) { }
@@ -42,4 +55,11 @@ export class getScheduleDTO extends PaginationQuery {
   })
   @IsOptional()
   id: string;
+
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsOptional()
+  idUser: string;
 }
