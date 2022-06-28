@@ -82,6 +82,7 @@ export class AuthController {
   @ApiOkResponse({ type: sucessResponseDTO })
   async forgotPW(@Query() forgotDTO: ForgotDTO) {
     return await this.authService.forgotPW(forgotDTO);
+
   }
 
   @ApiOperation({ summary: 'Verify otp' })
