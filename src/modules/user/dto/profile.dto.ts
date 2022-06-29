@@ -46,6 +46,14 @@ export class profileDTO {
   @ApiProperty()
   @IsOptional()
   address: string;
+
+  @ApiProperty()
+  @IsOptional()
+  experience: string; //kinh nghiem
+
+  @ApiProperty()
+  @IsOptional()
+  specialization: string; //chuyen mon
 }
 
 export class ProfileResponseDTO extends profileDTO {

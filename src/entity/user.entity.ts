@@ -51,6 +51,12 @@ export class User {
   @Column()
   address: string;
 
+  @Column()
+  specialization: string; // chuyen mon
+
+  @Column()
+  experience: string; //kinh nghiem
+
   @Column({
     type: 'enum',
     enum: ROLE,
