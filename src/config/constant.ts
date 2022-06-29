@@ -21,3 +21,9 @@ export enum isChecked {
   FALSE = 0
 
 }
+export enum STATUS_SCHEDULE {
+  SUCCESS = 'success',
+  ACTIVE = 'active',
+  CANCEL = 'cancel'
+
+}

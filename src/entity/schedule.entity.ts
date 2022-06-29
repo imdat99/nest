@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Type } from 'class-transformer';
+import { STATUS_SCHEDULE } from 'src/config/constant';
 import {
   Column,
   Entity,
@@ -29,6 +30,15 @@ export class Schedule {
 
   @Column()
   symptom: string;
+
+  @Column()
+  note: string;
+
+  @Column({
+    type: 'enum',
+    enum: STATUS_SCHEDULE,
+  })
+  status: STATUS_SCHEDULE;
 
   @ManyToOne(() => Pet, (pet) => pet.schedules, {
     eager: true,

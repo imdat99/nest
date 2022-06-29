@@ -19,7 +19,7 @@ export class CustomerService {
 
     const data = await this.customerRepo.findAndCount({
       where: {
-        name: Like('%' + keyword + '%'),
+        name: Like('%' + keyword + '%') || getQuery.name,
         id: getQuery.id,
       },
       order: { name: getQuery.sortBy ? 'DESC' : 'ASC' },

@@ -27,7 +27,7 @@ export class UserService {
       where: {
         name: Like('%' + keyword + '%') || getQuery.name,
         id: getQuery.id,
-        //role: ROLE.DOC    //doctor role    
+        role: getQuery.role    //doctor role    
 
       }
       ,

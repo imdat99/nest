@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsDate, IsOptional } from 'class-validator';
+import { IsDate, IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
 import { PaginationQuery } from 'src/common/dto';
 import { Omit } from 'src/common/tools/helper';
+import { STATUS_SCHEDULE } from 'src/config/constant';
 
 
 export class updateScheduleDTO {
@@ -17,13 +18,20 @@ export class updateScheduleDTO {
   time: string;
 
   @ApiProperty()
+  @IsNotEmpty()
+  @IsEnum(STATUS_SCHEDULE, { each: true })
+  status: STATUS_SCHEDULE;
+
+  @ApiProperty()
   @IsOptional()
   symptom: string;
 
+  @ApiProperty()
+  @IsOptional()
+  note: string;
+
 }
 export class ScheduleDTO extends updateScheduleDTO {
-
-
 
   @ApiProperty()
   @IsOptional()

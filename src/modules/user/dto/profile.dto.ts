@@ -76,4 +76,10 @@ export class getProfileDTO extends PaginationQuery {
   })
   @IsOptional()
   id: string;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsOptional()
+  role: ROLE;
 }
