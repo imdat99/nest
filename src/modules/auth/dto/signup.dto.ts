@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsEnum, IsNotEmpty, Length } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional, Length } from 'class-validator';
 import { ESexOfHuman, ROLE } from 'src/config/constant';
 
 export class signUpDTO {
@@ -51,6 +51,14 @@ export class signUpDTO {
   @ApiProperty()
   @IsNotEmpty()
   address: string;
+
+  @ApiProperty()
+  @IsOptional()
+  experience: string; //kinh nghiem
+
+  @ApiProperty()
+  @IsOptional()
+  specialization: string; //chuyen mon
 
 }
 

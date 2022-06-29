@@ -48,13 +48,13 @@ export class User {
   @Column()
   idNumber: string;
 
-  @Column()
+  @Column({ type: 'longtext' })
   address: string;
 
-  @Column()
+  @Column({ type: 'longtext' })
   specialization: string; // chuyen mon
 
-  @Column()
+  @Column({ type: 'longtext' })
   experience: string; //kinh nghiem
 
   @Column({
