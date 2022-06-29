@@ -24,6 +24,7 @@ export class ScheduleService {
     const keyword = getScheduleQuery.search || '';
 
     const data = await this.scheduleRepo.findAndCount({
+
       where: {
         // name: Like('%' + keyword + '%') || getScheduleQuery.date,
         id: getScheduleQuery.id,
