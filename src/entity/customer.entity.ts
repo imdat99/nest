@@ -19,7 +19,7 @@ export class Customer {
   @Column()
   id: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, length: 150 })
   name: string;
 
   @Column({
