@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { paginateResponse } from 'src/common/response';
 import response from 'src/common/response/response-func';
+import { STATUS_SCHEDULE } from 'src/config/constant';
 import { Pet } from 'src/entity/pet.entity';
 import { Schedule } from 'src/entity/schedule.entity';
 import { User } from 'src/entity/user.entity';
@@ -70,5 +71,27 @@ export class ScheduleService {
     });
     // delete res?.passWord;
     return response(200, res);
+  }
+  async overviewStatus() {
+    const active = await this.scheduleRepo.count({
+      where: {
+        status: STATUS_SCHEDULE.ACTIVE
+      }
+    })
+    const cancel = await this.scheduleRepo.count({
+      where: {
+        status: STATUS_SCHEDULE.CANCEL
+      }
+    })
+    const success = await this.scheduleRepo.count({
+      where: {
+        status: STATUS_SCHEDULE.SUCCESS
+      }
+    })
+    const res = {
+      active, success, cancel
+    }
+    return response(200, res);
+
   }
 }

@@ -3,13 +3,24 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { elementAt } from 'rxjs';
 import response, { paginateResponse } from 'src/common/response/response-func';
 import { ROLE } from 'src/config/constant';
+import { Customer } from 'src/entity/customer.entity';
+import { Pet } from 'src/entity/pet.entity';
+import { Schedule } from 'src/entity/schedule.entity';
+import { Specie } from 'src/entity/specie.entity';
+import { Types } from 'src/entity/type.entity';
 import { User } from 'src/entity/user.entity';
 import { Like, Repository } from 'typeorm';
 import { getProfileDTO, profileDTO } from './dto';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectRepository(User) private userRepo: Repository<User>) { }
+  constructor(
+    @InjectRepository(User) private userRepo: Repository<User>,
+    @InjectRepository(Customer) private customerRepo: Repository<Customer>,
+    @InjectRepository(Pet) private petRepo: Repository<Pet>,
+    @InjectRepository(Types) private typeRepo: Repository<Types>,
+    @InjectRepository(Specie) private specieRepo: Repository<Specie>,
+    @InjectRepository(Schedule) private scheduleRepo: Repository<Schedule>) { }
 
   async getProfile(id: string) {
     const profile = await this.userRepo.findOneBy({ id });
@@ -38,11 +49,6 @@ export class UserService {
     data[0].map((el) => {
       delete el.passWord
     })
-
-
-
-
-
     return paginateResponse(data, page, take);
   }
 
@@ -55,4 +61,23 @@ export class UserService {
   //   });
   //   return response(200, res);
   // }
+
+
+  async summaryBranch() {
+
+    const sumCustomer = await this.customerRepo.count();
+    const sumUser = await this.userRepo.count();
+    const sumPet = await this.petRepo.count();
+    const sumType = await this.typeRepo.count();
+    const sumSpecie = await this.specieRepo.count();
+    const sumSchedule = await this.scheduleRepo.count();
+
+    const res = {
+      sumCustomer,
+      sumUser,
+      sumPet, sumType, sumSpecie, sumSchedule
+    }
+    return response(200, res);
+
+  }
 }

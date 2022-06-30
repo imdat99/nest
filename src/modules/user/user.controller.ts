@@ -41,4 +41,15 @@ export class UserController {
     return await this.userService.getAllUser(getQuery);
 
   }
+
+
+  @ApiOperation({ summary: 'Lấy tổng số lượng các thành phần' })
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/summary')
+  @ApiOkResponse()
+  async summary() {
+    return await this.userService.summaryBranch();
+
+  }
+
 }

@@ -35,4 +35,12 @@ export class ScheduleController {
     return await this.scheduleService.updateSchedule(updateScheduleDTO, id);
   }
 
+  @ApiOperation({ summary: 'Tổng Quan Trạng Thái Lịch Khám' })
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOkResponse()
+  @Get('overview/status')
+  async overviewStatus() {
+    return await this.scheduleService.overviewStatus()
+  }
+
 }
