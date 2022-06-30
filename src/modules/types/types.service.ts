@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import response, { paginateResponse } from 'src/common/response/response-func';
+import response, { errorResponse, paginateResponse } from 'src/common/response/response-func';
 import { Types } from 'src/entity/type.entity';
 import { Repository, Like } from 'typeorm';
 import { getTypesDTO, TypesDTO } from './dto/types.dto';
@@ -47,7 +47,20 @@ export class TypesService {
     return response(200, res);
   }
   async deleteType(id: string) {
-    await this.typeRepo.delete({ id });
-    return response(200, '');
+    // await this.typeRepo.delete({ id });
+    // return response(200, '');
+
+    try {
+      await this.typeRepo.delete({ id });
+    } catch (error) {
+      if (error.errno === 1451) {
+        return errorResponse('Type related Specie is exist');
+
+      }
+
+
+    }
+    return response(200, 'Delete Successfully');
+
   }
 }

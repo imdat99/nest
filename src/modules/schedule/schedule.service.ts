@@ -94,4 +94,10 @@ export class ScheduleService {
     return response(200, res);
 
   }
+
+
+  async deleteSchedule(id: string) {
+    await this.scheduleRepo.delete({ id });
+    return response(200, 'Delete Successfully');
+  }
 }

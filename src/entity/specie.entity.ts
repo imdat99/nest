@@ -23,7 +23,7 @@ export class Specie {
 
   @ManyToOne(() => Types, (type) => type.species, {
     eager: true,
-    onDelete: 'SET NULL',
+
   })
   type: Types;
 

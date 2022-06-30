@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { elementAt } from 'rxjs';
-import response, { paginateResponse } from 'src/common/response/response-func';
+import response, { errorResponse, paginateResponse } from 'src/common/response/response-func';
 import { ROLE } from 'src/config/constant';
 import { Customer } from 'src/entity/customer.entity';
 import { Pet } from 'src/entity/pet.entity';
@@ -61,6 +61,22 @@ export class UserService {
   //   });
   //   return response(200, res);
   // }
+
+
+  async deleteUser(id: string) {
+    try {
+      await this.userRepo.delete({ id });
+    } catch (error) {
+      if (error.errno === 1451) {
+        return errorResponse('User related Schedule is exist');
+      }
+    }
+    return response(200, 'Delete Successfully');
+
+  }
+
+
+
 
 
   async summaryBranch() {

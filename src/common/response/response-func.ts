@@ -1,8 +1,15 @@
-export default function response(status: number, resData: any) {
+import { HttpException, HttpStatus } from "@nestjs/common";
+
+export default function response(statusCode: number, resData: any) {
   return {
-    status,
+    statusCode,
     data: resData,
   };
+}
+
+export function errorResponse(message: string) {
+  throw new HttpException(message, HttpStatus.BAD_REQUEST)
+
 }
 
 export function paginateResponse(data: any, page: number, limit: number) {

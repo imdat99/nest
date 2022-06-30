@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { paginateResponse } from 'src/common/response';
-import response from 'src/common/response/response-func';
+import response, { errorResponse } from 'src/common/response/response-func';
 import { Customer } from 'src/entity/customer.entity';
 import { Pet } from 'src/entity/pet.entity';
 import { Specie } from 'src/entity/specie.entity';
+import { User } from 'src/entity/user.entity';
 import { Like, Repository } from 'typeorm';
 import { getPetDTO, PetDTO } from './dto/pet.dto';
 
@@ -13,6 +14,8 @@ export class PetService {
   constructor(@InjectRepository(Pet) private petRepo: Repository<Pet>,
     @InjectRepository(Specie) private specieRepo: Repository<Specie>,
     @InjectRepository(Customer) private customerRepo: Repository<Customer>,
+    @InjectRepository(User) private userRepo: Repository<User>,
+
 
   ) { }
 
@@ -88,6 +91,21 @@ export class PetService {
       ...pet,
     });
     return response(200, updated);
+  }
+
+  async deletePet(id: string) {
+    // const user = this.userRepo.find({})
+    try {
+      await this.petRepo.delete({ id });
+
+
+    } catch (error) {
+      console.log(error);
+      if (error.errno === 1451) {
+        return errorResponse('Pet is exist in schedule');
+      }
+    }
+    return response(200, 'Delete Successfully');
   }
 
 

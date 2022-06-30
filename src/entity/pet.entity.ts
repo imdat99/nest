@@ -51,13 +51,13 @@ export class Pet {
 
   @ManyToOne(() => Customer, (customer) => customer.pets, {
     eager: true,
-    onDelete: 'SET NULL',
+
   })
   customer: Customer;
 
   @ManyToOne(() => Specie, (specie) => specie.pets, {
     eager: true,
-    onDelete: 'SET NULL',
+
   })
   specie: Specie;
 

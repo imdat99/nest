@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import response, { paginateResponse } from 'src/common/response/response-func';
+import response, { errorResponse, paginateResponse } from 'src/common/response/response-func';
 import { Specie } from 'src/entity/specie.entity';
 import { Types } from 'src/entity/type.entity';
 import { Repository, Like } from 'typeorm';
@@ -71,7 +71,13 @@ export class SpecieService {
   }
 
   async deleteSpecie(id: string) {
-    await this.specieRepo.delete({ id });
-    return response(200, '');
+    try {
+      await this.specieRepo.delete({ id });
+    } catch (error) {
+      if (error.errno === 1451) {
+        return errorResponse('Specie related Pet is exist');
+      }
+    }
+    return response(200, 'Delete Successfully');
   }
 }

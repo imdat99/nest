@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { paginateResponse } from 'src/common/response';
-import response from 'src/common/response/response-func';
+import response, { errorResponse } from 'src/common/response/response-func';
 import { Customer } from 'src/entity/customer.entity';
 import { Like, Repository } from 'typeorm';
 import { CustomerDTO, getCustomerDTO } from './dto/customer.dto';
@@ -48,6 +48,16 @@ export class CustomerService {
     });
     // delete res?.passWord;
     return response(200, res);
+  }
 
+  async deleteCustomer(id: string) {
+    try {
+      await this.customerRepo.delete({ id });
+    } catch (error) {
+      if (error.errno === 1451) {
+        return errorResponse('Customer related Pet is exist ');
+      }
+    }
+    return response(200, 'Delete Successfully');
   }
 }

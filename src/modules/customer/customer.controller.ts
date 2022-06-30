@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CustomerService } from './customer.service';
@@ -42,5 +42,13 @@ export class CustomerController {
   // async deleteTypes(@Param('id') id: string) {
   //   return await this.typesService.deleteType(id);
   // }
+
+
+  @ApiOperation({ summary: 'Xóa Khách Hàng' })
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('/:id')
+  async deleteSpecie(@Param('id') id: string) {
+    return await this.customerService.deleteCustomer(id);
+  }
 
 }

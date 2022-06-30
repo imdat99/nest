@@ -42,13 +42,12 @@ export class Schedule {
 
   @ManyToOne(() => Pet, (pet) => pet.schedules, {
     eager: true,
-    onDelete: 'SET NULL',
   })
   pet: Pet;
 
   @ManyToOne(() => User, (user) => user.schedules, {
     eager: true,
-    onDelete: 'SET NULL',
+
   })
   user: User;
 

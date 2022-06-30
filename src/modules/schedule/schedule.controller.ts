@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { getAllScheduleResponseDTO, getScheduleDTO, ScheduleDTO, ScheduleResponseDTO, updateScheduleDTO } from './dto/schedule.dto';
@@ -33,6 +33,13 @@ export class ScheduleController {
   @Put('/:id')
   async updateTypes(@Body() updateScheduleDTO: updateScheduleDTO, @Param('id') id: string) {
     return await this.scheduleService.updateSchedule(updateScheduleDTO, id);
+  }
+
+  @ApiOperation({ summary: 'Xóa Lịch khám' })
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('/:id')
+  async deleteTypes(@Param('id') id: string) {
+    return await this.scheduleService.deleteSchedule(id);
   }
 
   @ApiOperation({ summary: 'Tổng Quan Trạng Thái Lịch Khám' })

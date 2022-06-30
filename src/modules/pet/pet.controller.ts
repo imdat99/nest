@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Pet } from 'src/entity/pet.entity';
@@ -33,6 +33,13 @@ export class PetController {
   @Put('/:id')
   async updateSpecie(@Body() Pet: PetDTO, @Param('id') id: string) {
     return await this.petService.updatePet(Pet, id);
+  }
+
+  @ApiOperation({ summary: 'Xóa Thú' })
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('/:id')
+  async deleteTypes(@Param('id') id: string) {
+    return await this.petService.deletePet(id);
   }
 
 }

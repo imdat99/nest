@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBearerAuth,
@@ -40,6 +40,13 @@ export class UserController {
   async registerUser(@Query() getQuery: getProfileDTO) {
     return await this.userService.getAllUser(getQuery);
 
+  }
+
+  @ApiOperation({ summary: 'Xóa nhân viên, bác sĩ' })
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('/:id')
+  async deleteTypes(@Param('id') id: string) {
+    return await this.userService.deleteUser(id);
   }
 
 
