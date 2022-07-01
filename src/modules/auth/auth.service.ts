@@ -55,7 +55,7 @@ export class AuthService {
       this.jwtService.signAsync(
         {
           id,
-          userName,
+          userName
         },
         {
           secret: this.config.get<string>('ACCESTOKEN_TOKEN_SECRET'),
@@ -65,7 +65,7 @@ export class AuthService {
       this.jwtService.signAsync(
         {
           id,
-          userName,
+          userName
         },
         {
           secret: this.config.get<string>('REFRESHTOKEN_TOKEN_SECRET'),
@@ -130,7 +130,7 @@ export class AuthService {
       await this.createRtArray(newUser.id as string);
       const tokens = await this.getTokens(
         newUser.id as string,
-        newUser.userName as string,
+        newUser.userName as string
       );
       return { status: 200, ...tokens };
     } catch (err) {
@@ -156,7 +156,7 @@ export class AuthService {
       }
       const tokens = await this.getTokens(
         isExistUser.id as string,
-        isExistUser.userName as string,
+        isExistUser.userName as string
       );
       delete isExistUser.passWord;
       return { status: 200, ...tokens, user: isExistUser };
