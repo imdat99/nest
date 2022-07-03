@@ -46,8 +46,6 @@ export class SpecieService {
   }
 
   async updateSpecie(specie: SpecieDTO, id: string) {
-    console.log(specie);
-
     if (specie.idType) {
       const type = await this.typeRepo.findOne({
         where: { id: specie.idType },
@@ -71,8 +69,6 @@ export class SpecieService {
       ...property,
       ...specie,
     });
-    console.log('74', updated);
-
     return response(200, updated);
   }
 
