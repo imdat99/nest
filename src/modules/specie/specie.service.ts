@@ -46,12 +46,15 @@ export class SpecieService {
   }
 
   async updateSpecie(specie: SpecieDTO, id: string) {
+    console.log(specie);
+
     if (specie.idType) {
       const type = await this.typeRepo.findOne({
         where: { id: specie.idType },
         relations: ['species'],
       });
       const property = await this.specieRepo.findOneBy({ id });
+
       delete specie.idType;
       const update = await this.specieRepo.save({
         ...property,
@@ -60,6 +63,7 @@ export class SpecieService {
       type.addSpecie(update as any);
       await this.typeRepo.save({ ...type });
       const updated = await this.specieRepo.findOneBy({ id });
+
       return response(200, updated);
     }
     const property = await this.specieRepo.findOneBy({ id });
@@ -67,6 +71,8 @@ export class SpecieService {
       ...property,
       ...specie,
     });
+    console.log('74', updated);
+
     return response(200, updated);
   }
 
