@@ -100,7 +100,6 @@ export class PetService {
 
 
     } catch (error) {
-      console.log(error);
       if (error.errno === 1451) {
         return errorResponse('Pet is exist in schedule');
       }

@@ -16,6 +16,7 @@ export class ScheduleService {
     @InjectRepository(Schedule) private scheduleRepo: Repository<Schedule>,
     @InjectRepository(User) private userRepo: Repository<User>,
 
+
   ) { }
 
   async getSchedule(getScheduleQuery: getScheduleDTO) {
@@ -44,16 +45,11 @@ export class ScheduleService {
     return paginateResponse(data, page, take);
   }
   async getScheduleByIdUser(idUser: string) {
-    const user = await this.userRepo.findOne({
-      where: { id: idUser },
-      relations: ['schedules'],
-    })
-    const data = user.schedules;
-    data.forEach((el) => {
-      delete el.user;
+    const schedule = await this.scheduleRepo.find();
+    const data = schedule.filter((el) => {
+      return el.user.id === idUser
     })
     return response(200, data);
-
   }
 
   async createSchedule(schedule: ScheduleDTO) {
