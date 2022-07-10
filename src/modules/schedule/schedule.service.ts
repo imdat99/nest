@@ -43,6 +43,18 @@ export class ScheduleService {
 
     return paginateResponse(data, page, take);
   }
+  async getScheduleByIdUser(idUser: string) {
+    const user = await this.userRepo.findOne({
+      where: { id: idUser },
+      relations: ['schedules'],
+    })
+    const data = user.schedules;
+    data.forEach((el) => {
+      delete el.user;
+    })
+    return response(200, data);
+
+  }
 
   async createSchedule(schedule: ScheduleDTO) {
     const pet = await this.petRepo.findOne({

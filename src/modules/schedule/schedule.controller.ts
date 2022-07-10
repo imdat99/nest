@@ -19,6 +19,14 @@ export class ScheduleController {
     return await this.scheduleService.getSchedule(getScheduleQuery);
   }
 
+  @ApiOperation({ summary: 'Lấy ds Lịch Khám theo id bác sĩ' })
+  @UseGuards(AuthGuard('jwt'))
+  // @ApiOkResponse({ type: ScheduleResponseDTO })
+  @Get('doctor/:id')
+  async getScheduleByIdUser(@Param('id') id: string) {
+    return await this.scheduleService.getScheduleByIdUser(id);
+  }
+
   @ApiOperation({ summary: 'Tạo lịch khám' })
   @UseGuards(AuthGuard('jwt'))
   @ApiOkResponse({ type: ScheduleResponseDTO })
